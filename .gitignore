@@ -1,0 +1,10 @@
+.bundle
+vendor/bundle
+
+.c9
+
+*.db
+
+.DS_Store
+
+.ruby-version
