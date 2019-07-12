@@ -5,13 +5,15 @@
 	<title>タイトル</title>
 </head>
 <body>
-<% unless session[:user]%>
-ログインしてみや
-<a href="/signin">ログイン</a>
-<% else %>
-<h2><%= User.find(session[:user]).mail %></h2>
-<a href="/dic">辞書に登録する</a>
-<a href="/play/r">物語作る</a>
-<% end %>
+
+  <% unless session[:user]%>
+    ログインしてみや
+    <a href="/signin">ログイン</a>
+  <% else %>
+    <h2><%= User.find(session[:user]).mail %></h2>
+    <a href="/dic">辞書に登録する</a>
+    <a href="/play/r">物語作る</a>
+  <% end %>
+
 </body>
 </html>
