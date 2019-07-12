@@ -2,6 +2,7 @@ require 'bundler/setup'
 Bundler.require
 require 'sinatra/reloader' if development?
 require './models'
+require 'sinatra/reloader'
 
 enable :sessions
 
@@ -47,6 +48,8 @@ end
 
 get '/signout' do
   session[:user] = nil
+
+  redirect '/'
 end
 
 get '/dic' do
