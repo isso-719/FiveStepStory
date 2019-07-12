@@ -63,5 +63,24 @@ post '/dic/new' do
 end
 
 get '/play/r' do
+
+  c_contents = Content.where(user_id: session[:user])
+  content_id = []
+  c_contents.each do |content|
+    content_id.push(content.id)
+  end
+  # binding.pry
+  @c_random = Content.find_by(id: content_id.sample)
+  # binding.pry
+  @r_when = @c_random.c_when
+  @c_random = c_contents.find_by(id: content_id.sample)
+  @r_where = @c_random.c_where
+  @c_random = c_contents.find_by(id: content_id.sample)
+  @r_who = @c_random.c_who
+  @c_random = c_contents.find_by(id: content_id.sample)
+  @r_what = @c_random.c_what
+  @c_random = c_contents.find_by(id: content_id.sample)
+  @r_how = @c_random.c_how
+
   erb :r_play
 end
