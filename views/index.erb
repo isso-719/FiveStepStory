@@ -5,9 +5,9 @@
 	<title>タイトル</title>
 </head>
 <body>
-<% unless session[:user]%>
-<% else %>
-<h2><%= User.find(session[:user]).mail %></h2>
-<% end %>
+	<% unless session[:user]%>
+	<% else %>
+		<h2><%= User.find(session[:user]).mail %></h2>
+	<% end %>
 </body>
 </html>
