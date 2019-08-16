@@ -5,6 +5,8 @@
 		<title>タイトル</title>
 	</head>
 	<body>
+	現在人数
+	<div id='count'><%= @count + 1%></div>
 		<% unless session[:user]%>
 			ログインしてみや
 			<a href="/signin">ログイン</a>
@@ -12,6 +14,28 @@
 			<h2><%= User.find(session[:user]).mail %></h2>
 			<a href="/dic">辞書に登録する</a>
 			<a href="/play/r">物語作る</a>
+			<a href="/signout">ログアウト</a>
 		<% end %>
+		<script>
+			var countBox = document.getElementById("count");
+			var turnBox = document.getElementById("turn");
+
+			window.onload = function(){
+				var count = new WebSocket('ws://' + window.location.host + "/websocket/count");
+				// 接続が始まった時
+				count.onopen = function() { count.send('{"type":"open"}'); };
+				// 接続が終わった時
+				count.onclose = function() { count.send('{"type":"close"}'); };
+				// メッセージを受け取った時
+				count.onmessage = function(m) {
+					console.log(m.data)
+					data = JSON.parse(m.data)
+					console.log(data)
+					if(data.type == 'count'){
+						countBox.innerHTML = data.count
+					}
+				}
+			};
+		</script>
 	</body>
 </html>

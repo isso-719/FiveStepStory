@@ -8,3 +8,6 @@ end
 class Content < ActiveRecord::Base
   belongs_to :user
 end
+
+class Count < ActiveRecord::Base
+end

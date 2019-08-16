@@ -17,3 +17,5 @@ gem 'rake'
 gem 'bcrypt'
 
 gem 'pry'
+
+gem 'sinatra-websocket'
