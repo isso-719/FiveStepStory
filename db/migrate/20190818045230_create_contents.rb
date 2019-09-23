@@ -1,4 +1,4 @@
-class Contents < ActiveRecord::Migration[5.2]
+class CreateContents < ActiveRecord::Migration[5.1]
   def change
       create_table :contents do |t|
       t.references :user

@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <title><%# <%= @title + ':Gerusi' %></title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <script src="/js/materialize.min.js"></script>
+    <script src="/js/jquery-2.1.1.min.js"></script>
+  </head>
+  <body>
+    <p><%= @wins.count %>/<%= @games.count %></p>
+    <%= "winrate : #{100 * @wins.count / @games.count}%" %>
+    <% @games.each do |game| %>
+    <p>
+      <% winner = game.game.turn == 'white' ? 0 : 1 %>
+      <%= game.game.game_users[winner].user.name == @user.name ? '勝ち' : '負け' %>
+      <%= game.game.game_users[winner].user.name %>
+      <%= game.game.game_users.first.user.name %>
+      <%= game.game.game_users.second.user.name %>
+    </p>
+    <% end %>
+  </body>
+</html>

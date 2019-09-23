@@ -1,0 +1,23 @@
+<div class="col s12 m6 <%= @login ? 'l4': 'l6' %>">
+  <div class="card">
+    <div class="card-content red accent-2 white-text">
+      <p class="card-stats-title">
+        <i class="material-icons middle">personal_video</i> 対戦中</p>
+      <div class="card-doing-games card-games">
+        <% rooms = @rooms.select{|room| room.status == 'doing' }.shuffle[0...5]%>
+        <table class="red lighten-2">
+        <% rooms.each do |room| %>
+          <tr>
+            <td><i class="material-icons left">person</i><%= room.game_users.first.user.name %></td>
+            <td><i class="material-icons left">person</i><%= room.game_users.second.user.name %></td>
+            <td><a class="black-text" href="/room/<%= room.id %>">Room<%= room.id %>へ</a></td>
+          </tr>
+        <% end %>
+        </table>
+      </div>
+    </div>
+    <div class="card-action red darken-1">
+      <div id="sales-compositebar" class="center-align"></div>
+    </div>
+  </div>
+</div>

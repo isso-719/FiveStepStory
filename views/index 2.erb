@@ -1,0 +1,125 @@
+<html>
+  <head>
+    <title></title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <script src="/js/materialize.min.js"></script>
+    <%# <script src="/js/jquery-2.1.1.min.js"></script> %>
+  </head>
+  <body>
+
+    <% unless session[:user]%>
+        ログインしてみや
+        <a href="/signin">ログイン</a>
+      <% else %>
+        <h2><%= User.find(session[:user]).name %></h2>
+        <a href="/play/m">複数人でやる</a>
+        <a href="/dic">辞書に登録する</a>
+        <% unless Content.find_by(user_id: session[:user]).nil? %>
+        <a href="/play/r">物語作る</a>
+        <% end %>
+        <a href="/signout">ログアウト</a>
+      <% end %>
+
+
+
+    <div id="flipbook">
+      <div class="hard"> Turn.js </div>
+      <div class="hard"></div>
+      <div class="page1"> </div>
+      <div class="page2"> </div>
+      <div class="page3"> </div>
+      <div class="page4"> </div>
+      <div class="hard"></div>
+      <div class="hard"></div>
+    </div>
+    <script type="text/javascript">
+      $('#flipbook').turn({
+          // Width
+
+          width:922,
+
+          // Height
+
+          height:600,
+
+          // Elevation
+
+          elevation: 50,
+
+          // Enable gradients
+
+          gradients: true,
+
+          // Auto center this flipbook
+
+          autoCenter: true
+
+      });
+    </script>
+    <style type="text/css">
+    #book{
+        width:800px;
+        height:500px;
+    }
+
+    #book .turn-page{
+        background-color:white;
+    }
+
+    #book .cover{
+        background:#333;
+    }
+
+    #book .cover h1{
+        color:white;
+        text-align:center;
+        font-size:14px;
+        line-height:500px;
+        margin:0px;
+    }
+
+    #book .loader{
+        background-image:url(loader.gif);
+        width:24px;
+        height:24px;
+        display:block;
+        position:absolute;
+        top:238px;
+        left:188px;
+    }
+
+    #book .data{
+        text-align:center;
+        font-size:40px;
+        color:#999;
+        line-height:500px;
+    }
+
+    #controls{
+        width:800px;
+        text-align:center;
+        margin:20px 0px;
+        font:30px arial;
+    }
+
+    #controls input, #controls label{
+        font:30px arial;
+    }
+
+    #book .odd{
+        background-image:-webkit-linear-gradient(left, #FFF 95%, #ddd 100%);
+        background-image:-moz-linear-gradient(left, #FFF 95%, #ddd 100%);
+        background-image:-o-linear-gradient(left, #FFF 95%, #ddd 100%);
+        background-image:-ms-linear-gradient(left, #FFF 95%, #ddd 100%);
+    }
+
+    #book .even{
+        background-image:-webkit-linear-gradient(right, #FFF 95%, #ddd 100%);
+        background-image:-moz-linear-gradient(right, #FFF 95%, #ddd 100%);
+        background-image:-o-linear-gradient(right, #FFF 95%, #ddd 100%);
+        background-image:-ms-linear-gradient(right, #FFF 95%, #ddd 100%);
+    }
+    </style>
+  </body>
+</html>

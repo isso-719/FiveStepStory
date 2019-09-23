@@ -1,41 +1,302 @@
 <!DOCTYPE html>
 <html lang="ja">
-	<head>
-		<meta charset="UTF-8">
-		<title>タイトル</title>
-	</head>
-	<body>
-	現在人数
-	<div id='count'><%= @count + 1%></div>
-		<% unless session[:user]%>
-			ログインしてみや
-			<a href="/signin">ログイン</a>
-		<% else %>
-			<h2><%= User.find(session[:user]).mail %></h2>
-			<a href="/dic">辞書に登録する</a>
-			<a href="/play/r">物語作る</a>
-			<a href="/signout">ログアウト</a>
-		<% end %>
-		<script>
-			var countBox = document.getElementById("count");
-			var turnBox = document.getElementById("turn");
+  <head>
+    <script type="text/javascript" src="/js/jquery.min.1.7.js"></script>
+    <script
+      type="text/javascript"
+      src="/js/jquery-ui-1.8.20.custom.min.js"
+    ></script>
+    <script type="text/javascript" src="/js/jquery.mousewheel.min.js"></script>
+    <script type="text/javascript" src="/js/modernizr.2.5.3.min.js"></script>
+    <script type="text/javascript" src="/js/hash.js"></script>
+    <link rel="stylesheet" href="/css/docs.css">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+  </head>
+  <body>
+    <div id="canvas">
+      <div id="book-zoom">
+        <div class="sample-docs">
+          <div class="hard">
+            <div id="page1">
+              <div class="begin"><p class="begin_text"><a href="#page/2">はじめる</a></p></div>
+            </div>
+          </div>
+          <div id="page2">
+          </div>
+          <div id="page3">
+            <h1>About</h1>
+            <h1>目次</h1>
+            <div>
+              <p><a href="#page/5">サインイン</a></p>
+              <p><a href="#page/7">サインアップ</a></p>
+            </div>
+          </div>
+          <div id="page4">
+          </div>
+          <div id="page5">
+            <form method="post" action="/signin">
+              <h1>サインイン</h1>
+              <%= session[:error] %>
+              <input type="text" placeholder="Username" />
+              <input type="password" placeholder="Password" />
+              <button type="submit">サインイン</button>
+              <p><a href="#page/7">サインアップする</a></p>
+            </form>
+          </div>
+          <div id="page6">
+          </div>
+          <div id="page7">
+            <form method="post" action="/signup">
+              <h1>サインアップ</h1>
+              <%= session[:error] %>
+              <input type="text" placeholder="Username" />
+              <input type="password" placeholder="Password" />
+              <input placeholder="Password(Retype)" type="password" name="password_confirmation">
+              <button type="submit">サインアップ</button>
+              <p><a href="#page/5">サインインする</a></p>
+            </form>
+          </div>
+          <div id="page8">
+            <h1>© 2019 Kazuki Isogai.</h1>
+          </div>
+        </div>
+      </div>
 
-			window.onload = function(){
-				var count = new WebSocket('ws://' + window.location.host + "/websocket/count");
-				// 接続が始まった時
-				count.onopen = function() { count.send('{"type":"open"}'); };
-				// 接続が終わった時
-				count.onclose = function() { count.send('{"type":"close"}'); };
-				// メッセージを受け取った時
-				count.onmessage = function(m) {
-					console.log(m.data)
-					data = JSON.parse(m.data)
-					console.log(data)
-					if(data.type == 'count'){
-						countBox.innerHTML = data.count
-					}
-				}
-			};
-		</script>
-	</body>
+    <script type="text/javascript">
+      function loadApp() {
+        var flipbook = $(".sample-docs");
+
+        // Check if the CSS was already loaded
+
+        if (flipbook.width() == 0 || flipbook.height() == 0) {
+          setTimeout(loadApp, 10);
+          return;
+        }
+
+        // Mousewheel
+
+        $("#book-zoom").mousewheel(function(event, delta, deltaX, deltaY) {
+          var data = $(this).data(),
+            step = 5,
+            flipbook = $(".sample-docs"),
+            actualPos = $("#slider").slider("value") * step;
+
+          if (typeof data.scrollX === "undefined") {
+            data.scrollX = actualPos;
+            data.scrollPage = flipbook.turn("page");
+          }
+
+          data.scrollX = Math.min(
+            $("#slider").slider("option", "max") * step,
+            Math.max(0, data.scrollX + deltaX)
+          );
+
+          var actualView = Math.round(data.scrollX / step),
+            page = Math.min(
+              flipbook.turn("pages"),
+              Math.max(1, actualView * 2 - 2)
+            );
+
+          if ($.inArray(data.scrollPage, flipbook.turn("view", page)) == -1) {
+            data.scrollPage = page;
+            flipbook.turn("page", page);
+          }
+
+          if (data.scrollTimer) clearInterval(data.scrollTimer);
+
+          data.scrollTimer = setTimeout(function() {
+            data.scrollX = undefined;
+            data.scrollPage = undefined;
+            data.scrollTimer = undefined;
+          }, 1000);
+        });
+
+        // Slider
+
+        $("#slider").slider({
+          min: 1,
+          max: 100,
+
+          start: function(event, ui) {
+            if (!window._thumbPreview) {
+              _thumbPreview = $("<div />", { class: "thumbnail" }).html(
+                "<div></div>"
+              );
+              setPreview(ui.value);
+              _thumbPreview.appendTo($(ui.handle));
+            } else setPreview(ui.value);
+
+            moveBar(false);
+          },
+
+          slide: function(event, ui) {
+            setPreview(ui.value);
+          },
+
+          stop: function() {
+            if (window._thumbPreview) _thumbPreview.removeClass("show");
+
+            $(".sample-docs").turn(
+              "page",
+              Math.max(1, $(this).slider("value") * 2 - 2)
+            );
+          }
+        });
+
+        // URIs
+
+        Hash.on("^page\/([0-9]*)$", {
+          yep: function(path, parts) {
+            var page = parts[1];
+
+            if (page !== undefined) {
+              if ($(".sample-docs").turn("is"))
+                $(".sample-docs").turn("page", page);
+            }
+          },
+          nop: function(path) {
+            if ($(".sample-docs").turn("is")) $(".sample-docs").turn("page", 1);
+          }
+        });
+
+        // Arrows
+
+        $(document).keydown(function(e) {
+          var previous = 37,
+            next = 39;
+
+          switch (e.keyCode) {
+            case previous:
+              $(".sample-docs").turn("previous");
+
+              break;
+            case next:
+              $(".sample-docs").turn("next");
+
+              break;
+          }
+        });
+
+        // Create the flipbook
+
+        flipbook
+          .turn({
+            elevation: 50,
+            acceleration: false,
+            gradients: true,
+            autoCenter: true,
+            duration: 1000,
+            pages: 8,
+            when: {
+              turning: function(e, page, view) {
+                var book = $(this),
+                  currentPage = book.turn("page"),
+                  pages = book.turn("pages");
+
+                if (currentPage > 3 && currentPage < pages - 3) {
+                  if (page == 1) {
+                    book
+                      .turn("page", 2)
+                      .turn("stop")
+                      .turn("page", page);
+                    e.preventDefault();
+                    return;
+                  } else if (page == pages) {
+                    book
+                      .turn("page", pages - 1)
+                      .turn("stop")
+                      .turn("page", page);
+                    e.preventDefault();
+                    return;
+                  }
+                } else if (page > 3 && page < pages - 3) {
+                  if (currentPage == 1) {
+                    book
+                      .turn("page", 2)
+                      .turn("stop")
+                      .turn("page", page);
+                    e.preventDefault();
+                    return;
+                  } else if (currentPage == pages) {
+                    book
+                      .turn("page", pages - 1)
+                      .turn("stop")
+                      .turn("page", page);
+                    e.preventDefault();
+                    return;
+                  }
+                }
+
+                Hash.go("page/" + page).update();
+
+                if (page == 1 || page == pages) $(".sample-docs .tabs").hide();
+              },
+
+              turned: function(e, page, view) {
+                var book = $(this);
+
+                $("#slider").slider("value", getViewNumber(book, page));
+
+                if (page != 1 && page != book.turn("pages"))
+                  $(".sample-docs .tabs").fadeIn(500);
+                else $(".sample-docs .tabs").hide();
+
+                book.turn("center");
+                updateTabs();
+              },
+
+              start: function(e, pageObj) {
+                moveBar(true);
+              },
+
+              end: function(e, pageObj) {
+                var book = $(this);
+
+                setTimeout(function() {
+                  $("#slider").slider("value", getViewNumber(book));
+                }, 1);
+
+                moveBar(false);
+              },
+
+              missing: function(e, pages) {
+                for (var i = 0; i < pages.length; i++)
+                  addPage(pages[i], $(this));
+              }
+            }
+          })
+          .turn("page", 1);
+
+        $("#slider").slider("option", "max", numberOfViews(flipbook));
+
+        flipbook.addClass("animated");
+
+        // Show canvas
+
+        $("#canvas").css({ visibility: "visible" });
+      }
+
+      // Hide canvas
+
+      $("#canvas").css({ visibility: "hidden" });
+
+      yepnope({
+        test: Modernizr.csstransforms,
+        yep: ["/js/turn.min.js", "/css/jquery.ui.css"],
+        nope: ["/js/turn.html4.min.js", "/css/jquery.ui.html4.css"],
+        both: ["/css/docs.css", "/js/docs.js"],
+        complete: loadApp
+      });
+    </script>
+    <script>
+      (function (d) {
+        var config = {
+          kitId: 'gji5frv',
+          scriptTimeout: 3000,
+          async: true
+        },
+          h = d.documentElement, t = setTimeout(function () { h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive"; }, config.scriptTimeout), tk = d.createElement("script"), f = false, s = d.getElementsByTagName("script")[0], a; h.className += " wf-loading"; tk.src = 'https://use.typekit.net/' + config.kitId + '.js'; tk.async = true; tk.onload = tk.onreadystatechange = function () { a = this.readyState; if (f || a && a != "complete" && a != "loaded") return; f = true; clearTimeout(t); try { Typekit.load(config) } catch (e) { } }; s.parentNode.insertBefore(tk, s)
+      })(document);
+    </script>
+  </body>
 </html>

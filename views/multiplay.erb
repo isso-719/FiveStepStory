@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="UTF-8">
+		<title>タイトル</title>
+	</head>
+	<body>
+    <h5>新しい部屋の追加</h5>
+    <form action="/create_room" method="post">
+      <button type="submit" class="waves-effect waves-light btn">
+        部屋の追加
+      </button>
+    </form>
+		<div class="col s12 m6 <%= @login ? 'l4': 'l6' %>">
+			<div class="card">
+				<div class="card-content cyan white-text">
+					<p class="card-stats-title">
+						<i class="material-icons middle">flag</i> 待機中の部屋</p>
+					<div class="card-doing-games card-games">
+						<table class="cyan lighten-2">
+						<% @rooms.select{|game| game.status == 'waiting'}.each do |room| %>
+							<tr>
+								<td><p class="left"><i class="material-icons left">person</i><%= room.game_users.first.user.name %></p></td>
+								<td><a class="black-text" href="/room/<%= room.id %>">Room<%= room.id %>へ</a></td>
+							</tr>
+						<% end %>
+						</table>
+					</div>
+				</div>
+				<div class="card-action cyan darken-1">
+					<div id="clients-bar" class="center-align"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

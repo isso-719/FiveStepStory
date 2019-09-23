@@ -1,0 +1,28 @@
+<div class="col s12 m6 l4">
+  <div class="card">
+    <div class="card-content teal accent-4 white-text">
+      <p class="card-stats-title">
+        <i class="material-icons middle">assignment</i> 対戦履歴</p>
+      <div class="card-doing-games card-games">
+        <% rooms = @rooms.select{|room| room.status == 'finished' and room.joinUser(session[:user])}%>
+        <table class="teal lighten-2">
+        <% rooms[0...5].each do |room| %>
+          <tr>
+            <% if false%>
+              <td class="red-text white"><a class="red btn-floating"><i class="material-icons">arrow_downward</i></a></td>
+            <% else %>
+              <td><a class="blue btn-floating"><i class="material-icons">arrow_upward</i></a></td>
+            <% end %>
+            <td><i class="material-icons left">person</i><%= room.game_users.first.user.name %></td>
+            <td><i class="material-icons left">person</i><%= room.game_users.second.user.name %></td>
+            <td><a class="black-text" href="/room/<%= room.id %>">Room<%= room.id %>へ</a></td>
+          </tr>
+        <% end %>
+        </table>
+      </div>
+    </div>
+    <div class="card-action teal darken-1">
+      <div id="profit-tristate" class="center-align"></div>
+    </div>
+  </div>
+</div>
