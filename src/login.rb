@@ -16,7 +16,7 @@ post '/signin' do
     session[:error] = 'different password'
     redirect '/#page/5'
   end
-  redirect '/'
+  redirect '/#page/2'
 end
 
 post '/signup' do
@@ -37,10 +37,10 @@ post '/signup' do
   if @user.persisted?
     session[:user] = @user.id
   end
-  redirect '/#page/7'
+  redirect '/#page/2'
 end
 
 get '/signout' do
   session[:user] = nil
-  redirect '/'
+  redirect '/#page/5'
 end

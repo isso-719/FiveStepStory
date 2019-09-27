@@ -19,6 +19,7 @@ end
 
 get '/' do
   @title = "Home"
+  @rooms = Game.all.reverse
   erb :index
 end
 
@@ -34,7 +35,7 @@ post '/dic/new' do
     c_when: params[:c_when],c_where: params[:c_where],c_who: params[:c_who],c_what: params[:c_what],c_how: params[:c_how]
   )
 
-  redirect '/'
+  redirect '/#page/5'
 
 end
 

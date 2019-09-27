@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<%# <!DOCTYPE html>
 <html lang="ja">
 	<head>
 		<meta charset="UTF-8">
@@ -14,4 +14,110 @@
 			<input type="submit" value="辞書登録する">
 		</form>
 	</body>
+</html> %>
+<html lang="ja">
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=0.3">
+    <meta charset="UTF-8">
+    <title>作文/原稿用紙CSS(横書き版：Sakubun CSS)</title>
+    <style>@charset "utf-8";
+
+body {
+  background-color: lightyellow;
+}
+.sakubun {
+  width: 100%;
+  font-family: "ヒラギノ明朝 ProN W3", "HiraMinProN-W3", "HG明朝E", "ＭＳ Ｐ明朝", "MS PMincho", "MS 明朝", serif;
+  font-size: 28px;
+  color: #333;
+
+  border:1px solid rgba(0,0,0,.2);
+  position: relative;
+  letter-spacing: .5em;
+  line-height: 2em;
+  padding: 5px;
+  float: right;
+}
+
+.sakubun::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,.2) 1px, transparent 0),
+    linear-gradient(to left, rgba(0,0,0,.2) 1px, transparent 0),
+    linear-gradient(to bottom, transparent 11px, rgba(0,0,0,.2) 12px, transparent 0);
+
+  background-size: 1.5em 2em;
+
+  background-position: top left;
+  background-origin: padding-box;
+  margin-left: -5px;
+  z-index: -1;
+}
+
+.sakubun::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.sakubun p {
+  margin: 0;
+  margin-right: 0;
+  /* margin-top: .3em; */
+}
+
+.sakubun ruby {
+  ruby-align: left;
+}
+.sakubun ruby > rt {
+  font-size: 10px;
+  letter-spacing: 0;
+  text-align: justify;
+  line-height: 1em;
+  transform: translateX(.40em) translateY(-1.1em);
+  margin-bottom: .1000em;
+}
+input[type="text"]{
+  font-family: "ヒラギノ明朝 ProN W3", "HiraMinProN-W3", "HG明朝E", "ＭＳ Ｐ明朝", "MS PMincho", "MS 明朝", serif;
+  border-style:None;
+}
+</style>
+  </head>
+  <body style="">
+    <h1>作文/原稿用紙CSS：横書き版</h1>直接文章を入力して編集できるよ↓
+    <div style="padding:10px;margin-left:10px">
+      <div class="sakubun">
+        <form action="/dic/new" method="post" name="form" id="form">
+          <p>いつ</p>
+          <input type="text" name="c_when" id="c_when"  placeholder="今日" required style="background-color:transparent;font-size:40px;margin-top:5px;">
+          <%# <p id="when" style="margin-left:45px;" contenteditable="true">今日</p> %>
+          <p>どこで</p>
+          <input type="text" name="c_where" id="c_where" placeholder="家で" required style="background-color:transparent;font-size:40px;">
+          <%# <p id="where" style="margin-left:45px;" contenteditable="true">家で</p> %>
+          <p>誰が</p>
+          <input type="text" name="c_who" id="c_who" placeholder="いっそが" required style="background-color:transparent;font-size:40px;>
+          <%# <p id="who" style="margin-left:45px;" contenteditable="true">いっそが</p> %>
+          <p>何を</p>
+          <input type="text" name="c_what" id="c_what" placeholder="パソコンを" required style="background-color:transparent;font-size:40px;">
+          <%# <p id="what" style="margin-left:45px;" contenteditable="true">パソコンを</p> %>
+          <p>どうした</p>
+          <input type="text" name="c_how" id="c_how" placeholder="カタカタした" required style="background-color:transparent;font-size:35px;">
+          <%# <p id="how" style="margin-left:45px;" contenteditable="true">カタカタした</p> %>
+          <input type="submit" value="辞書登録する">
+        </form>
+      </div>
+    </div>
+    <br clear="all">
+  </body>
 </html>
+<%# <form action="/dic/new" method="post">
+  <input type="text" name="c_when" placeholder="いつ" required>
+  <input type="text" name="c_where" placeholder="どこで" required>
+  <input type="text" name="c_who" placeholder="誰が" required>
+  <input type="text" name="c_what" placeholder="何を" required>
+  <input type="text" name="c_how" placeholder="どうした" required>
+  <input type="submit" value="辞書登録する">
+</form> %>

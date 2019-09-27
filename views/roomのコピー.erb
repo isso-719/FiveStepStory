@@ -1,12 +1,3 @@
-<html>
-<head>
-  <title><%# <%= @title + ':Gerusi' %></title>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" href="/css/materialize.min.css">
-  <script src="/js/materialize.min.js"></script>
-  <script src="/js/jquery-2.1.1.min.js"></script>
-</head>
-<body>
 <script src='/js/check.js'></script>
 <script src='/js/update.js'></script>
 <style>
@@ -66,7 +57,7 @@
     <div id="card-score" class="card cyan lighten-5">
       <div class="card-content cyan-text darken-1">
         <span class="card-title cyan-text darken-1">Score Board</span>
-        <div class="status blue-grey-text">
+        <div class="status blue-grey-text">                    
           <% if @room.status == 'waiting' %>
           <div class="orange lighten-4 center"><h4 id="status">待機中</h4></div>
           <% elsif @room.status == 'doing' %>
@@ -126,7 +117,7 @@ initializeBoard = () => {
 <% @stones.each do |stone| %>
   document.getElementsByTagName('table')[1].
     getElementsByTagName('tr')[<%= stone.y %>].
-    getElementsByTagName('td')[<%= stone.x %>].innerHTML
+    getElementsByTagName('td')[<%= stone.x %>].innerHTML 
       = "<div class='<%= stone.color %> stone'></div>"
 <% end %>
 }
@@ -198,7 +189,7 @@ window.onload = function(){
 
   join = () => {
     count.send(JSON.stringify({
-      type : 'join',
+      type : 'join', 
       room_id: <%= @room.id %>,
       user_id: <%= session[:user] || "\"\"" %>,
     }));
@@ -212,5 +203,3 @@ window.onload = function(){
   }
 };
 </script>
-</body>
-</html>

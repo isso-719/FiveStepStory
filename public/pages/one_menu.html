@@ -1,0 +1,119 @@
+<h1>1人でプレイする</h1>
+<br />
+<!-- <p class="title">&mdash; 目次 &mdash;</p> -->
+<ul class="chapters">
+  <li>
+    <a href="/dic" target="_parent"><span>辞書に追加する</span> </a>
+  </li>
+  <!-- <% unless Content.find_by(user_id: session[:user]).nil? %> -->
+  <li>
+    <a href="/dic/list" target="_parent"><span>辞書を見る</span> </a>
+  </li>
+  <li>
+    <a href="/play/r" target="_parent"><span>物語をランダムで作る</span> </a>
+  </li>
+  <!-- <% end %> -->
+  <li>
+    <a href="/#page/2" target="_parent"><span>目次に戻る</span> </a>
+  </li>
+</ul>
+
+<style>
+  * {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    vertical-align: baseline;
+  }
+
+  body {
+    font-size: 125%;
+    font-family: serif;
+    line-height: 1.33;
+    font-weight: normal;
+    max-width: 30em;
+    margin: 1.33em auto;
+    background: #ffffcc;
+  }
+
+  * + * {
+    margin-top: 1.33em;
+  }
+
+  h1,
+  h2 {
+    text-align: center;
+    font-family: serif;
+    font-weight: normal;
+    line-height: 1;
+  }
+
+  h1 {
+    font-size: 3em;
+  }
+
+  li {
+    margin-top: 0;
+  }
+
+  a {
+    text-decoration: none;
+    border-bottom: 1px solid;
+    color: #000;
+  }
+
+  .chapters li {
+    font-size: 1.25em;
+    list-style: none;
+    line-height: 1.125;
+    padding: 0.25em 1em;
+  }
+
+  .chapters a {
+    font-weight: bold;
+    border: 0;
+  }
+
+  .chapters a,
+  .chapters time {
+    display: inline-block;
+    width: 50%;
+    vertical-align: baseline;
+    margin-top: 0.33em;
+  }
+
+  .chapters time {
+    text-align: right;
+    font-style: italic;
+  }
+
+  .chapters li:after {
+    border-top: 3px dotted;
+    content: "";
+    display: block;
+    height: 0;
+    position: relative;
+    bottom: 0.4em;
+    left: 3px;
+    right: 5px;
+    z-index: -1;
+  }
+
+  span {
+    background: #ffffcc;
+    padding: 0 0.3em 0 0;
+  }
+
+  time span {
+    padding: 0 0 0 0.3em;
+  }
+
+  h1 + p {
+    margin-top: 0;
+    text-align: center;
+  }
+
+  .title {
+    padding: 0.5em;
+  }
+</style>

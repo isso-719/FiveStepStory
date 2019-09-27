@@ -3,6 +3,10 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>タイトル</title>
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="/css/materialize.min.css">
+		<script src="/js/materialize.min.js"></script>
+		<script src="/js/jquery-2.1.1.min.js"></script>
 	</head>
 	<body>
     <h5>新しい部屋の追加</h5>
@@ -15,7 +19,7 @@
 			<div class="card">
 				<div class="card-content cyan white-text">
 					<p class="card-stats-title">
-						<i class="material-icons middle">flag</i> 待機中の部屋</p>
+						<i class="material-icons middle">flag</i> 対戦待ち</p>
 					<div class="card-doing-games card-games">
 						<table class="cyan lighten-2">
 						<% @rooms.select{|game| game.status == 'waiting'}.each do |room| %>

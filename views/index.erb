@@ -24,37 +24,106 @@
           <div id="page2">
           </div>
           <div id="page3">
-            <h1>About</h1>
-            <h1>目次</h1>
-            <div>
-              <p><a href="#page/5">サインイン</a></p>
-              <p><a href="#page/7">サインアップ</a></p>
-            </div>
+            <% unless session[:user] %>
+              <iframe id="inlineFrame"
+                  title="目次"
+                  width="471"
+                  height="600"
+                  src="/pages/mokuji_no.html" frameborder="no">
+              </iframe>
+              <%# <h1>About</h1>
+              <h1>目次</h1>
+              <div>
+                <p><a href="#page/5">サインイン</a></p>
+                <p><a href="#page/7">サインアップ</a></p>
+              </div> %>
+            <% else %>
+              <iframe id="inlineFrame"
+                  title="目次"
+                  width="471"
+                  height="600"
+                  src="/pages/mokuji_yes.html" frameborder="no">
+              </iframe>
+            <% end %>
           </div>
           <div id="page4">
           </div>
           <div id="page5">
-            <form method="post" action="/signin">
-              <h1>サインイン</h1>
-              <%= session[:error] %>
-              <input type="text" placeholder="Username" />
-              <input type="password" placeholder="Password" />
-              <button type="submit">サインイン</button>
-              <p><a href="#page/7">サインアップする</a></p>
-            </form>
+            <% unless session[:user] %>
+              <form method="post" action="/signin">
+                <h1>サインイン</h1>
+                <%= session[:error] %>
+                <input type="text" placeholder="Username" name="name" />
+                <input type="password" placeholder="Password" name="password" />
+                <button type="submit">サインイン</button>
+                <p><a href="#page/7">サインアップする</a></p>
+              </form>
+            <% else %>
+              <iframe id="inlineFrame"
+                  title="目次"
+                  width="471"
+                  height="600"
+                  src="/pages/one_menu.html" frameborder="no">
+              </iframe>
+            <% end %>
           </div>
           <div id="page6">
+            <% unless session[:user] %>
+            <% else %>
+              <h5>新しい部屋の追加</h5>
+              <form action="/create_room" method="post">
+                <button type="submit" class="waves-effect waves-light btn">
+                  部屋の追加
+                </button>
+              </form>
+              <div class="col s12 m6 <%= @login ? 'l4': 'l6' %>">
+                <div class="card">
+                  <div class="card-content cyan white-text">
+                    <p class="card-stats-title">
+                      待機中の部屋
+                    </p>
+                    <div class="card-doing-games card-games">
+                      <table class="cyan lighten-2">
+                        <% @rooms.select{|game| game.status == 'waiting'}.each do |room|
+                        %>
+                        <tr>
+                          <td>
+                            <p class="left">
+                              <%=
+                              room.game_users.first.user.name %>
+                            </p>
+                          </td>
+                          <td>
+                            <a class="black-text" href="/room/<%= room.id %>"
+                              >Room<%= room.id %>へ</a
+                            >
+                          </td>
+                        </tr>
+                        <% end %>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="card-action cyan darken-1">
+                    <div id="clients-bar" class="center-align"></div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
           </div>
           <div id="page7">
-            <form method="post" action="/signup">
-              <h1>サインアップ</h1>
-              <%= session[:error] %>
-              <input type="text" placeholder="Username" />
-              <input type="password" placeholder="Password" />
-              <input placeholder="Password(Retype)" type="password" name="password_confirmation">
-              <button type="submit">サインアップ</button>
-              <p><a href="#page/5">サインインする</a></p>
-            </form>
+            <% unless session[:user] %>
+              <form method="post" action="/signup">
+                <h1>サインアップ</h1>
+                <%= session[:error] %>
+                <input type="text" placeholder="Username" name="name" />
+                <input type="password" placeholder="Password" name="password" />
+                <input placeholder="Password(Retype)" type="password" name="password_confirmation">
+                <button type="submit">サインアップ</button>
+                <p><a href="#page/5">サインインする</a></p>
+              </form>
+            <% else %>
+            2人用
+            <% end %>
           </div>
           <div id="page8">
             <h1>© 2019 Kazuki Isogai.</h1>
