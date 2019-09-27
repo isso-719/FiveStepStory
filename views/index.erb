@@ -55,7 +55,7 @@
                 <%= session[:error] %>
                 <input type="text" placeholder="Username" name="name" />
                 <input type="password" placeholder="Password" name="password" />
-                <button type="submit">サインイン</button>
+                <button class="sign" type="submit">サインイン</button>
                 <p><a href="#page/7">サインアップする</a></p>
               </form>
             <% else %>
@@ -71,7 +71,7 @@
             <% unless session[:user] %>
             <% else %>
               <h5>新しい部屋の追加</h5>
-              <form action="/create_room" method="post">
+              <form class="create_room_bt" action="/create_room" method="post">
                 <button type="submit" class="waves-effect waves-light btn">
                   部屋の追加
                 </button>
@@ -118,7 +118,7 @@
                 <input type="text" placeholder="Username" name="name" />
                 <input type="password" placeholder="Password" name="password" />
                 <input placeholder="Password(Retype)" type="password" name="password_confirmation">
-                <button type="submit">サインアップ</button>
+                <button class="sign" type="submit">サインアップ</button>
                 <p><a href="#page/5">サインインする</a></p>
               </form>
             <% else %>

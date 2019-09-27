@@ -27,7 +27,7 @@ checkStone = (x, y) => {
     for(var dy = -1; dy <= 1 ; dy ++){
       if(dx == dy && dx == 0)continue;
       if(!insideBoard(x + dx) || !insideBoard(y + dy))continue;
-      flag = checkLine(x + dx, y + dy, dx, dy) || flag        
+      flag = checkLine(x + dx, y + dy, dx, dy) || flag
     }
   }
   const pos = getBoard(limitBoard(x), limitBoard(y))

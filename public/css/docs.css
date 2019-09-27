@@ -294,3 +294,7 @@ button:active {
   top: 3px;
   box-shadow: none;
 }
+.create_room_bt {
+  height: 0%;
+  padding: 30px;
+}

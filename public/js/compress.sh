@@ -2,11 +2,11 @@
 # Requires Closure Compiler Application
 # https://developers.google.com/closure/compiler/docs/gettingstarted_app
 
-# --compilation_level ADVANCED_OPTIMIZATIONS 
+# --compilation_level ADVANCED_OPTIMIZATIONS
 
 SCRIPTS=("turn" "turn.html4" "zoom" "scissor")
 SCRIPTS_LEN=${#SCRIPTS[@]}
-SCRIPTS_COMMENT="/* turn.js 4.1.0 | Copyright (c) 2012 Emmanuel Garcia | turnjs.com | turnjs.com/license.txt */"
+SCRIPTS_COMMENT="/* turn.js 4.1.0 | Copyright (c) 2019 KazukiIsogai | turnjs.com | turnjs.com/license.txt */"
 
 echo -e "${SCRIPTS_COMMENT}\n" > comment.js
 
@@ -25,7 +25,7 @@ for (( i=0; i<${SCRIPTS_LEN}; i++ ));
 do
 	java -jar "/tmp/compiler.jar" --js ${SCRIPTS[$i]}.js > ${SCRIPTS[$i]}.closure.js
 
-	cat comment.js ${SCRIPTS[$i]}.closure.js  > ${SCRIPTS[$i]}.min.js 
+	cat comment.js ${SCRIPTS[$i]}.closure.js  > ${SCRIPTS[$i]}.min.js
 
 	rm ${SCRIPTS[$i]}.closure.js
 
