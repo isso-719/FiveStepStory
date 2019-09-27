@@ -7,5 +7,12 @@ gem 'sinatra-contrib'
 gem 'activerecord'
 gem 'sinatra-activerecord'
 gem 'sinatra-websocket'
-gem 'sqlite3'
 gem 'bcrypt'
+
+group :development do
+  gem 'sqlite3'
+end
+
+group :production do
+  gem 'pg'
+end

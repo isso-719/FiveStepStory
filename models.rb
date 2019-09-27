@@ -1,4 +1,9 @@
-ActiveRecord::Base.establish_connection('sqlite3:db/development.db')
+Bundler.require
+require 'sinatra/reloader' if development?
+
+if development?
+  ActiveRecord::Base.establish_connection('sqlite3:db/development.db')
+end
 
 class Count < ActiveRecord::Base
 end

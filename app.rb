@@ -130,7 +130,7 @@ get '/websocket/:id' do |path|
           settings.sockets[path].each do |s| # メッセージを転送
             s.send({type: 'board', turn: data['turn'], pos: data['pos']}.to_json.to_s)
           end
-        when 'turn' # 送られたデータが board データだったら
+        when 'turn' # 送られたデータが turn データだったら
           game = Game.find(path)
           game.turn = game.turn == 'black' ? 'white' : 'black'
           game.pass_count = 0
